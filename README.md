@@ -20,7 +20,7 @@ THEN I am again presented with current and future conditions for that city
 
 ## Screenshots
 
-
+My website is meant to emulate the following example:
 
 ![06-server-side-apis-homework-demo](https://user-images.githubusercontent.com/109035732/188287724-91aaa363-fb10-4d11-bc11-8ea3300752ab.png)
 
