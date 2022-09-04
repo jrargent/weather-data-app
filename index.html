@@ -30,7 +30,7 @@
                     </div>
 
                     <!-- Saved City Buttons -->
-                    <div class="card">
+                    <div class="card" id="recent-cities">
                         <h3 class="card-header text-uppercase border-bottom border-dark">Saved Cities</h3>
                         <div id="city-buttons" class="card-body col-12 col-md-4 col-lg-3 d-grid gap-2">
                             <button data-city="" class="btn btn-secondary text-nowrap">Raleigh</button>
@@ -42,15 +42,20 @@
 
                 <!-- City Info -->
 
-                <div class="col-lg-9 border border-dark">
+                <div class="col-lg-9 border border-dark" id="city-current">
                     <h2 class="subtitle">
                         <span id="city-search-term">Atlanta</span>
                     </h2>
                     <div id="city-container" class="list-group"></div>
                 </div>
                 <!-- 5 day forecast-->
-                <div class="col-lg-9">
+                <div class="col-lg-9" id="city-5day">
                     <h3>5-Day Forecast</h3>
+                    <div class="col" id="c5d-d1"></div>
+                    <div class="col" id="c5d-d2"></div>
+                    <div class="col" id="c5d-d3"></div>
+                    <div class="col" id="c5d-d4"></div>
+                    <div class="col" id="c5d-d5"></div>
 
                 </div>
 
