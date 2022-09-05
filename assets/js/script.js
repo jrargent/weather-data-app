@@ -56,6 +56,7 @@ var appid = "8e0314ddd129d7fc7871d6bdb2b3bf0a";
 var userFormEl = document.querySelector('#user-form');
 var cityInputEl = document.querySelector("#city");
 var cityCurrentEl = document.querySelector("#city-current");
+var cityButtonsEl = document.querySelector("#city-buttons");
 
 // Step 1 - grab city name from user
 var formSubmitHandler = function (event) {
@@ -66,12 +67,28 @@ var formSubmitHandler = function (event) {
     if (cityName) {
         console.log(cityName);
       getCityData(cityName); // This needs to pass the city name into the geocoder api
-  
+      createCityButton(cityName); // this passes city name into the button creator
+
       cityCurrentEl.textContent = ''; // this should clear out the div with the current city info. If not, update and change.
       cityInputEl.value = ''; // clears out text input
     } else {
       alert('Please enter a city name');
     }
+  };
+
+  var buttonSubmitHandler = function (event) {
+    event.preventDefault();
+    var savedButtonCity = event.target.getAttribute("data-city");
+    console.log(savedButtonCity);
+
+  };
+
+  var createCityButton = function(city) {
+    var cityButton = document.createElement("button");
+    $(cityButton).addClass("btn btn-secondary text-nowrap");
+    $(cityButton).attr("data-city", city);
+    $(cityButton).text(city);
+    $(cityButtonsEl).append(cityButton);
   };
 
   var getCityData = function(city) {
@@ -99,3 +116,4 @@ var formSubmitHandler = function (event) {
   
 
   userFormEl.addEventListener('submit', formSubmitHandler);
+  cityButtonsEl.addEventListener("click", buttonSubmitHandler);
