@@ -51,7 +51,8 @@ Breakdown of 1.
 
 
  */
-
+var recentCities = [];
+var localStorageKeyName = "cities"
 var appid = "8e0314ddd129d7fc7871d6bdb2b3bf0a";
 var userFormEl = document.querySelector('#user-form');
 var cityInputEl = document.querySelector("#city");
@@ -60,50 +61,59 @@ var cityButtonsEl = document.querySelector("#city-buttons");
 
 // Step 1 - grab city name from user
 var formSubmitHandler = function (event) {
-    event.preventDefault();
-  
-    var cityName = cityInputEl.value.trim(); // should add in split by space/strip out commas to grab state name as well as city name. Create variable for statename as well as city name
-  
-    if (cityName) {
-        console.log(cityName);
-      getCityData(cityName); // This needs to pass the city name into the geocoder api
-      createCityButton(cityName); // this passes city name into the button creator
+  event.preventDefault();
 
-      cityCurrentEl.textContent = ''; // this should clear out the div with the current city info. If not, update and change.
-      cityInputEl.value = ''; // clears out text input
-    } else {
-      alert('Please enter a city name');
-    }
-  };
+  var cityName = cityInputEl.value.trim(); // should add in split by space/strip out commas to grab state name as well as city name. Create variable for statename as well as city name
 
-  var buttonSubmitHandler = function (event) {
-    event.preventDefault();
-    var savedButtonCity = event.target.getAttribute("data-city");
-    console.log(savedButtonCity);
+  if (cityName) {
+    console.log(cityName);
+    getCityData(cityName); // This needs to pass the city name into the geocoder api
+    createCityButton(cityName); // this passes city name into the button creator
 
-  };
+    cityCurrentEl.textContent = ''; // this should clear out the div with the current city info. If not, update and change.
+    cityInputEl.value = ''; // clears out text input
+  } else {
+    alert('Please enter a city name');
+  }
+};
 
-  var createCityButton = function(city) {
+var buttonSubmitHandler = function (event) {
+  event.preventDefault();
+  var savedButtonCity = event.target.getAttribute("data-city");
+  // console.log(savedButtonCity);
+  getCityData(savedButtonCity); // passes city name from clicked button into geocoding api
+
+};
+
+var createCityButton = function (city) {
+  if (!recentCities.includes(city)) { //only push into array if city doesn't already exist in array
     var cityButton = document.createElement("button");
     $(cityButton).addClass("btn btn-secondary text-nowrap");
     $(cityButton).attr("data-city", city);
     $(cityButton).text(city);
     $(cityButtonsEl).append(cityButton);
+
+    //add saved city name to array to save in localStorage
+
+    recentCities.push(city);
+    citySave();
   };
 
-  var getCityData = function(city) {
-    // geocoding api - will give latitude/longitude for given city
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + appid; // check docs about using string interpolation here instead
+};
+
+var getCityData = function (city) {
+  // geocoding api - will give latitude/longitude for given city
+  var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=5&appid=" + appid; // check docs about using string interpolation here instead
 
 
-    fetch(apiUrl)
+  fetch(apiUrl)
     .then(function (response) {
       if (response.ok) {
         console.log(response);
         response.json().then(function (data) {
           console.log(data);
           console.log(data[0].lat, data[0].lon);
-        //   displayCityWeather(data, city); <-- need to create function for taking lat and long data and doing next API fetch
+          //   displayCityWeather(data, city); <-- need to create function for taking lat and long data and doing next API fetch
         });
       } else {
         alert('Error: ' + response.statusText);
@@ -113,7 +123,22 @@ var formSubmitHandler = function (event) {
       alert('Unable to connect to Geocoding API');
     });
 };
-  
 
-  userFormEl.addEventListener('submit', formSubmitHandler);
-  cityButtonsEl.addEventListener("click", buttonSubmitHandler);
+var citySave = function () {
+  localStorage.setItem(localStorageKeyName, JSON.stringify(recentCities));
+};
+
+var loadCityButton = function () {
+  var storedCity = JSON.parse(localStorage.getItem(localStorageKeyName));
+
+  $.each(storedCity, function (i) {
+    createCityButton(storedCity[i]);
+  });
+  recentCities = storedCity; // repopulates the city array
+};
+
+
+userFormEl.addEventListener('submit', formSubmitHandler);
+cityButtonsEl.addEventListener("click", buttonSubmitHandler);
+
+loadCityButton();
