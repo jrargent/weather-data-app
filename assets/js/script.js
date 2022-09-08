@@ -53,7 +53,7 @@ Breakdown of 1.
  */
 var recentCities = [];
 var localStorageKeyName = "cities"
-var appid = "8e0314ddd129d7fc7871d6bdb2b3bf0a";
+var appid = "";
 var userFormEl = document.querySelector('#user-form');
 var cityInputEl = document.querySelector("#city");
 var cityCurrentEl = document.querySelector("#city-current");
