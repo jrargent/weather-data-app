@@ -1,6 +1,8 @@
 # weather-data-app
 
+This assignment is incomplete. This is due to the fact that I could not figure out how to include the necessary API key without github getting mad at me. I will research this issue further and then return to this assignment at a later date. 
 
+I also decided to forego completing this assignment in favor of focusing on the group project. Again, I will return, complete, and re-submit for a better grade at a later date. 
 
 
 ## Acceptance Criteria
